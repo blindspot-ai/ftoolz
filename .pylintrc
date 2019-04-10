@@ -1,0 +1,51 @@
+# http://pylint-messages.wikidot.com/all-codes
+# https://github.com/PyCQA/pylint/blob/master/pylintrc
+
+[MASTER]
+extension-pkg-whitelist=cytoolz,nose
+
+[MESSAGES CONTROL]
+disable=
+    missing-docstring,
+    too-few-public-methods,
+    wrong-import-order,
+    R,
+    logging-fstring-interpolation
+
+msg-template=
+    {abspath}:{line}:{column}: [{msg_id}({symbol}), {obj}] {msg}
+
+output-format=colorized
+
+[BASIC]
+# Regular expression which should only match correct function names
+# UPDATED: max length to 60
+function-rgx=[a-z_][a-z0-9_]{2,60}$
+
+# Regular expression which should only match correct method names
+# UPDATED: max length to 60
+method-rgx=[a-z_][a-z0-9_]{2,60}$
+
+# Good variable names which should always be accepted, separated by a comma
+# defaults were i,j,k,ex,Run,_
+good-names=
+    i,j,k,ex,Run,_,e,op,m,t,it,id,fn,f,g,h,n,v,ds,xs,ys,zs,x,y,z,
+    ff,fa,fb,fc,a,b,c,A,B,C,E,F,G,K,R,T,R,V,Z
+
+const-naming-style=any
+
+[TYPECHECK]
+ignored-classes=
+
+[DESIGN]
+max-args=10
+max-attributes=15
+max-locals=20
+
+[MISCELLANEOUS]
+# dont list TODOs or FIXMEs
+notes=
+
+[FORMAT]
+# Maximum number of characters on a single line.
+max-line-length=79
