@@ -35,6 +35,7 @@ setup(
     version=ftoolz.__version__,
     description='Collection of higher-order and utility functions',
     long_description=(open('README.md').read() if exists('README.md') else ''),
+    long_description_content_type="text/markdown",
     classifiers=[
         'Development Status :: 2 - Pre-Alpha',
         'Environment :: Console',
