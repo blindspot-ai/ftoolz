@@ -29,8 +29,9 @@ method-rgx=[a-z_][a-z0-9_]{2,60}$
 # Good variable names which should always be accepted, separated by a comma
 # defaults were i,j,k,ex,Run,_
 good-names=
-    i,j,k,ex,Run,_,e,op,m,t,it,id,fn,f,g,h,n,v,ds,xs,ys,zs,x,y,z,
-    ff,fa,fb,fc,a,b,c,A,B,C,E,F,G,K,R,T,R,V,Z
+    a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,K,R,T,R,V,Z,
+    ex,fa,fb,fc,ff,fn,id,it,op,xs,ys,zs,_,,applyN,fmap,fmapN,
+    A_in,B_in,C_in,D_in,A_out,A_out,B_out,C_out,D_out
 
 const-naming-style=any
 

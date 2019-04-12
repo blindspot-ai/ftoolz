@@ -1,10 +1,12 @@
+from functools import reduce
 from itertools import islice
-from typing import Callable, Iterable, List, Optional, Tuple, TypeVar
+from typing import Callable, Iterable, List, Optional, Reversible, Tuple, \
+    TypeVar
 
 from cytoolz.functoolz import complement, compose
 from cytoolz.itertoolz import drop, identity, last as clast, peek, unique
 
-from pytoolz.typing import Map, Seq
+from ftoolz.typing import Map, Seq
 
 A = TypeVar('A')
 B = TypeVar('B')
@@ -194,6 +196,34 @@ def first(seq: Seq[E]) -> Optional[E]:
     >>> first([])
     """
     return seq[0] if seq else None
+
+
+def fold_right(op: Callable[[A, B], B], xs: Iterable[A], z: B) -> B:
+    """
+    Fold iterable `xs` by applying binary operator `op` from the *right* with
+    `z` being initial value.
+
+    >>> def op(a: int, b: str) -> str:
+    ...     return f'{b} then {a}'
+
+    >>> xs = iter([1, 2, 3])
+    >>> fold_right(op, xs, '4')
+    '4 then 3 then 2 then 1'
+
+    This operation is terminal in `xs`.
+
+    >>> next(xs)
+    Traceback (most recent call last):
+    ...
+    StopIteration
+
+    Initial value is returned given an empty iterable.
+
+    >>> fold_right(op, iter([]), '42')
+    '42'
+    """
+    seq: Reversible[A] = xs if isinstance(xs, Reversible) else list(xs)
+    return reduce(lambda right, left: op(left, right), reversed(seq), z)
 
 
 def head_tail(it: Iterable[E]) -> Tuple[E, Iterable[E]]:

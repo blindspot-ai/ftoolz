@@ -1,0 +1,16 @@
+sudo: required
+dist: xenial
+language: python
+python:
+  - "3.6"
+  - "3.7"
+
+install:
+  - make install
+  - pip install coveralls
+
+script:
+  - make release-check
+
+after_success:
+  - coveralls

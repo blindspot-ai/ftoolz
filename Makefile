@@ -1,9 +1,13 @@
-.PHONY: help clean setup setup-dev install release-check type-check flake8-check lint tests
+.PHONY: help build clean clean-build setup setup-dev install release-check type-check flake8-check lint tests twine-release-test
 
 .DEFAULT: help
 help:
+	@echo "make build"
+	@echo "       build distribution directories"
 	@echo "make clean"
-	@echo "       clean virtual environment"
+	@echo "       clean virtual environment and distribution"
+	@echo "make clean-build"
+	@echo "       clean distribution directories"
 	@echo "make setup"
 	@echo "       setup development environment"
 	@echo "make setup-dev"
@@ -20,9 +24,17 @@ help:
 	@echo "       run unit and doc tests"
 	@echo "make release-check"
 	@echo "       run type-check, flake8 check, linting and tests"
+	@echo "make twine-release-test"
+	@echo "       release ftoolz to test pypi using twine"
 
-clean:
+build: clean-build
+	@echo ">>> building ftoolz distribution"
+	python setup.py sdist
+
+clean: clean-build
 	rm -rf venv
+
+clean-build:
 	rm -rf dist
 	rm -rf build
 	rm -rf *.egg-info
@@ -40,16 +52,16 @@ install: clean
 	python setup.py install
 
 type-check:
-	@echo ">>> checking types in pytoolz and tests"
-	MYPYPATH=./stubs mypy pytoolz tests || ( echo ">>> type check failed"; exit 1; )
+	@echo ">>> checking types in ftoolz and tests"
+	MYPYPATH=./stubs mypy ftoolz tests || ( echo ">>> type check failed"; exit 1; )
 
 flake8-check:
-	@echo ">>> enforcing PEP 8 style with flake8 in pytoolz and tests"
-	flake8 --config=.flake8 pytoolz/ tests/ || ( echo ">>> flake8 check failed"; exit 1; )
+	@echo ">>> enforcing PEP 8 style with flake8 in ftoolz and tests"
+	flake8 --config=.flake8 ftoolz/ tests/ || ( echo ">>> flake8 check failed"; exit 1; )
 
 lint:
 	@echo ">>> linting code"
-	pylint -j 0 --rcfile .pylintrc pytoolz tests || ( echo ">>> linting failed"; exit 1; )
+	pylint -j 0 --rcfile .pylintrc ftoolz tests || ( echo ">>> linting failed"; exit 1; )
 
 tests:
 	@echo ">>> running tests"
@@ -57,3 +69,6 @@ tests:
 #	python setup.py test
 
 release-check: type-check flake8-check lint tests
+
+twine-release-test: build
+	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*

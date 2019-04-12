@@ -1,7 +1,7 @@
 [run]
 branch = True
 source =
-    pytoolz/
+    ftoolz/
 omit =
 
 [report]

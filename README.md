@@ -1,9 +1,70 @@
-# pytoolz
+# ftoolz
+[![Build Status](https://travis-ci.com/blindspot-ai/ftoolz.svg?branch=master)](https://travis-ci.com/blindspot-ai/ftoolz) [![Coverage Status](https://coveralls.io/repos/github/blindspot-ai/ftoolz/badge.svg?branch=master)](https://coveralls.io/github/blindspot-ai/ftoolz?branch=master) [![PyPI version](https://badge.fury.io/py/ftoolz.svg)](https://badge.fury.io/py/ftoolz)
 
 Collection of higher-order and utility functions built on top of `cytoolz`.
 
 ## Module overview
-Pytoolz are split into few generic modules.
+Ftoolz are split into few generic modules.
+
+### functoolz package
+Package that provides higher-order functions commonly associated with Functor, Applicative and Monad. 
+
+Moreover, there are general package-level functions implemented in `__init__.py`.
+ 
+| Function | Description |
+|----------|-------------|
+| `try_except(ex, f, g, args, kwargs)` | `f(args, kwargs)` and on exception(s) `ex` fallback to `g(args, kwargs)` |
+
+The package content is organized into modules by individual type class:
+1. `iter.py` for class `Iterable`. **Warn** some functions might not be pure because input iterable is consumed.
+1. `opt.py` for class `Optional` 
+1. `seq.py` for class `Seq` (`Sequece`). Methods typically return `tuple` instances to preserve immutability.
+
+#### Module function overview
+| def / .py | iter | opt | seq |
+|-----------|------|-----|-----|
+|`apply`| x | x | x |
+|`apply2`| - | x | - |
+|`applyN`| - | + | - |
+|`flatmap`| x | x | x |
+|`flatten`| x | x | x |
+|`fmap`| x | x | x |
+|`fmap2`| x | x | x |
+|`fmap3`| - | x | - |
+|`fmapN`| - | + | - |
+|`fproduct`| x | x | x |
+|`lift`| x | x | x |
+|`product`| x | x | x |
+|`unit`| x | * | x |
+|`zip_map`| + | - | + |
+
+* `x` - implemented, statically type checked
+* `+` - implemented, possible runtime type errors
+* `*` - not implemented, supported natively
+* `-` - not implemented 
+
+#### traverse package
+Each module contains traversable-related functions for traversables `Iterable` and `Seq`. 
+Individual modules are named and reserved for single functor that wraps elements of the traversable sequence.
+
+List of currently implemented functions in modules (functors): 
+
+| def / .py | opt |
+|-----------|-----|
+|`sequence_iter`| x |
+|`sequence_seq`| x |
+|`traverse_iter`| x |
+|`traverse_iter`| x |
+
+### dicttoolz
+This module contains functions that work with `Map` (`Mapping`) instances.
+
+Table of contents
+
+| Function | Description |
+|----------|-------------|
+| `swap(dict, key1, key2)` | swap arbitrary values for `key1` and `key2` in given mapping |
+| `swap_values(dict, key1, key2)` | same as `swap` but preserving concrete value type `V` |
 
 ### itertoolz
 This module contains functions that work with `Iterable` instances.
@@ -21,6 +82,7 @@ selected by `key_fn` |
 | `filter_not_none(iterable)` | filter out `None` elements from iterable |
 | `find(predicate, iterable)` | find first element of iterable satisfying predicate |
 | `first(sequence)` | return first element of a sequence or `None` |
+| `fold_right(op, iterable, z)` | fold iterable by applying binary operator `op` from the *right* |
 | `head_tail(iterable)` | split iterable into head element and tail iterable |
 | `head_tail_list(iterable)` | same as `head_tail` but materialized tail into list |
 | `iter_with_final(iterable)` | creates iterable of tuples of original element and final flag |
@@ -55,14 +117,14 @@ Cytoolz is a cython implementation of a python library supporting functional sty
 
 We highly recommend reading the API docs and using it in your project.
 
-Pytoolz does not fork but rather extends cytoolz and provides typed stubs for it's API. 
+Ftoolz does not fork but rather extends cytoolz and provides typed stubs for it's API. 
 Please note that the typed stubs do not cover all the functions from cytoolz. 
 
 Also some valid cases might not be covered due to Python's restricted typing capabilities.
 
 ## Setup development environment
-It is highly recommended to use virtual environment to develop and test `pytoolz`. For making things easy there are 
-two make targets to setup `pytoolz`:
+It is highly recommended to use virtual environment to develop and test `ftoolz`. For making things easy there are 
+two make targets to setup `ftoolz`:
 * `make setup-dev` which creates new virtual environment in `./venv`
 * `make setup` that just installs dependencies for development
 
@@ -83,7 +145,7 @@ make type-check
 ```
 
 ### Code style checking
-Pytoolz uses [Flake8](http://flake8.pycqa.org/en/latest/index.html) for enforcing PEP 8 and other code smells.
+Ftoolz uses [Flake8](http://flake8.pycqa.org/en/latest/index.html) for enforcing PEP 8 and other code smells.
 ```bash
 make flake8-check
 ``` 

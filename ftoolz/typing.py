@@ -20,7 +20,7 @@ def assert_some(a: Optional[A]) -> A:
     >>> assert_some(None)
     Traceback (most recent call last):
     ...
-    pytoolz.typing.TypingError: Item expected to be not None, None given.
+    ftoolz.typing.TypingError: Item expected to be not None, None given.
     """
     if a is None:
         raise TypingError('Item expected to be not None, None given.')

@@ -5,7 +5,7 @@ from os.path import exists
 from setuptools import find_packages, setup
 from setuptools.dist import Distribution
 
-import pytoolz
+import ftoolz
 
 
 class BinaryDistribution(Distribution):
@@ -16,18 +16,23 @@ class BinaryDistribution(Distribution):
 
 
 test_requirements = [
+    # 'astroid==2.2.5',
+    'astroid==2.1.0',
     'coverage==4.5.1',
     'flake8==3.7.7',
-    'mypy==0.700',
+    # 'mypy==0.700',
+    'mypy==0.630',
     'nose==1.3.7',
     # 'nose2==0.8.0',
     # 'nose2[coverage_plugin]>=0.6.5',
-    'pylint==2.3.0',
+    # 'pylint==2.3.0',
+    'pylint==2.2.0',
+    'typed-ast==1.1.1',
 ]
 
 setup(
-    name='pytoolz',
-    version=pytoolz.__version__,
+    name='ftoolz',
+    version=ftoolz.__version__,
     description='Collection of higher-order and utility functions',
     long_description=(open('README.md').read() if exists('README.md') else ''),
     classifiers=[
@@ -41,11 +46,11 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    url='https://bitbucket.org/blindspotsolutions/pytoolz/',
+    url='https://github.com/blindspot-ai/ftoolz',
     maintainer='Martin Matyasek',
     maintainer_email='martin.matyasek@blindspot.ai',
     keywords='functional utility cytoolz itertools functools',
-    packages=find_packages(include=['pytoolz']),
+    packages=find_packages(include=['ftoolz']),
     include_package_data=True,
     distclass=BinaryDistribution,
     zip_safe=False,
