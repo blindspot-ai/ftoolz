@@ -37,7 +37,7 @@ setup(
     long_description=(open('README.md').read() if exists('README.md') else ''),
     long_description_content_type="text/markdown",
     classifiers=[
-        'Development Status :: 2 - Pre-Alpha',
+        'Development Status :: 4 - Beta',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Natural Language :: English',

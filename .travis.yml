@@ -2,8 +2,8 @@ sudo: required
 dist: xenial
 language: python
 python:
-  - "3.6"
   - "3.7"
+  - "3.6"
 
 install:
   - make install
@@ -14,3 +14,16 @@ script:
 
 after_success:
   - coveralls
+
+deploy:
+  provider: pypi
+  user: blindspot-ai
+  password:
+    secure: "p324XIUL4vrCoDuTRjt6uyHztciwatmJktsNljjDVKceM1BNGX1RAc8EhXNSpgLqBfETAqVujzVeeg1wPMMcfHypBQGjNoJoc9WQaGms5khqqqYGvJtU1FSjteBWIKDMFQtL5t2wjSnGw8GsOfsEz+whcbaFdEAknrX+W1pPunFadboesiV0PFToVwuLfn266uGOGDFGvzp3QtKFzG0eWlEj4a3nHDOBgMJddIzYOQ689Kr9qiBbsn1m9vcfUZ/G7xkEEtp2J0R8Ug8B3hkeItSHShT2OJdkx9cCdBkhOmniUsDTjUzBw4P1DPB1dtuf2p0QjNq8jW42sx6CZpxX5+AyFwgh3K0UYArcYKfvmSXYMVpOUavtI5rczySCiSfC708gmKnYatBQgpfa2tg+07re5GK7DiKAtOOYGNl7yQHWtPAOGd1JcI0p4qc27WKJyrc56SQNnIw5Sa1R9PUkxsd2UHXguCxN/UaOYRoH7Se/VqhSD6s4p2Jt2wI+dRNs8LW50KotdjbutHCoEwsw5R0Qt5yX7Caq965EZgauNrsqHidZcc9mJau+E6qVShbKCrDLhgRc+ALtaEPRQwL/C3ZanuZBX8LJweA7QW+s0G+mq85U/5ixqrnCfZmZaav+B5OUeXxckJxlkpZWWFPe/Vggh3t4Tw9m7jp7A2AQisg="
+  distributions: sdist
+  skip_cleanup: true
+  on:
+    branch: master
+    tags: true
+    python: 3.6
+    skip_existing: true

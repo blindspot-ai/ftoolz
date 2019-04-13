@@ -1,5 +1,7 @@
 # ftoolz
-[![Build Status](https://travis-ci.com/blindspot-ai/ftoolz.svg?branch=master)](https://travis-ci.com/blindspot-ai/ftoolz) [![Coverage Status](https://coveralls.io/repos/github/blindspot-ai/ftoolz/badge.svg?branch=master)](https://coveralls.io/github/blindspot-ai/ftoolz?branch=master) [![PyPI version](https://badge.fury.io/py/ftoolz.svg)](https://badge.fury.io/py/ftoolz)
+[![Build Status](https://travis-ci.com/blindspot-ai/ftoolz.svg?branch=master)](https://travis-ci.com/blindspot-ai/ftoolz) [![Coverage Status](https://coveralls.io/repos/github/blindspot-ai/ftoolz/badge.svg?branch=master)](https://coveralls.io/github/blindspot-ai/ftoolz?branch=master) [![PyPI version](https://badge.fury.io/py/ftoolz.svg)](https://badge.fury.io/py/ftoolz) [![PyPI status](https://img.shields.io/pypi/status/ftoolz.svg)](https://pypi.python.org/pypi/ftoolz/)
+
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/ftoolz.svg)](https://pypi.python.org/pypi/ftoolz/)
 
 Collection of higher-order and utility functions built on top of `cytoolz`.
 

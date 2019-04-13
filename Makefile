@@ -45,7 +45,7 @@ setup: clean
 setup-dev: clean
 	virtualenv -p python3 venv
 	./venv/bin/pip install -U pip
-	./venv/bin/pip install -U setuptools
+	./venv/bin/pip install -U setuptools twine bumpversion
 	./venv/bin/python setup.py develop
 
 install: clean
