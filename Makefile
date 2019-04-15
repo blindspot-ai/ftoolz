@@ -40,13 +40,13 @@ clean-build:
 	rm -rf *.egg-info
 
 setup: clean
-	python setup.py develop
+	pip install -U -e .[dev,test]
 
 setup-dev: clean
 	virtualenv -p python3 venv
 	./venv/bin/pip install -U pip
-	./venv/bin/pip install -U setuptools twine bumpversion
-	./venv/bin/python setup.py develop
+	./venv/bin/pip install -U setuptools
+	./venv/bin/pip install -U -e .[dev,test]
 
 install: clean
 	python setup.py install
@@ -66,7 +66,6 @@ lint:
 tests:
 	@echo ">>> running tests"
 	python tests/run.py || ( echo ">>> tests failed"; exit 1; )
-#	python setup.py test
 
 release-check: type-check flake8-check lint tests
 

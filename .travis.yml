@@ -6,7 +6,7 @@ python:
   - "3.6"
 
 install:
-  - make install
+  - make setup
   - pip install coveralls
 
 script:
