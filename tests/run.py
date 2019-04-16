@@ -1,6 +1,6 @@
 if __name__ == '__main__':
     import sys
-    import nose
+    import nose  # type: ignore
 
     sys.argv.append('--with-doctest')
     sys.argv.append('--with-coverage')

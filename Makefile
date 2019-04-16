@@ -53,7 +53,7 @@ install: clean
 
 type-check:
 	@echo ">>> checking types in ftoolz and tests"
-	MYPYPATH=./stubs mypy ftoolz tests || ( echo ">>> type check failed"; exit 1; )
+	mypy ftoolz tests || ( echo ">>> type check failed"; exit 1; )
 
 flake8-check:
 	@echo ">>> enforcing PEP 8 style with flake8 in ftoolz and tests"
