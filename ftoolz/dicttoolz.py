@@ -1,9 +1,26 @@
-from typing import Any, TypeVar
+from typing import Any, Callable, TypeVar
 
+from cytoolz import assoc
 from ftoolz.typing import Map
 
 K = TypeVar('K')
 V = TypeVar('V')
+
+
+def map_val(d: Map[K, Any], key: K, f: Callable[[Any], Any]) -> Map[K, Any]:
+    """
+    Apply value transformation `f` on value in `d` under `key`.
+
+    >>> map_val({'a': 1}, 'a', str)
+    {'a': '1'}
+
+    Returns original map if `key` does not exist in `d`. For different
+    behavior use related function `update_in` from `cytoolz`.
+
+    >>> map_val({'a': 1}, 'b', str)
+    {'a': 1}
+    """
+    return assoc(d, key, f(d[key])) if key in d else d
 
 
 def swap(d: Map[K, Any], key1: K, key2: K) -> Map[K, Any]:

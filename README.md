@@ -65,6 +65,7 @@ Table of contents
 
 | Function | Description |
 |----------|-------------|
+| `map_val(dict, key, f)` | apply value transformation `f` on value in `dict` under `key` |
 | `swap(dict, key1, key2)` | swap arbitrary values for `key1` and `key2` in given mapping |
 | `swap_values(dict, key1, key2)` | same as `swap` but preserving concrete value type `V` |
 
