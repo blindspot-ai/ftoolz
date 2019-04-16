@@ -1,7 +1,6 @@
 #!/usr/bin/env python
 
 from os.path import exists
-
 from setuptools import find_packages, setup
 from setuptools.dist import Distribution
 
@@ -40,6 +39,7 @@ test_requirements = [
 setup(
     name='ftoolz',
     version=ftoolz_version,
+    license='MIT',
     description='Collection of higher-order and utility functions',
     long_description=(open('README.md').read() if exists('README.md') else ''),
     long_description_content_type='text/markdown',
@@ -58,7 +58,7 @@ setup(
     maintainer='Martin Matyasek',
     maintainer_email='martin.matyasek@blindspot.ai',
     keywords='functional utility cytoolz itertools functools',
-    packages=find_packages(include=['ftoolz']),
+    packages=find_packages(exclude=['tests']),
     include_package_data=True,
     distclass=BinaryDistribution,
     zip_safe=False,
