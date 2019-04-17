@@ -16,6 +16,7 @@ class BinaryDistribution(Distribution):
 
 ftoolz_requirements = [
     'cytoolz==0.9.0.1',
+    'cytoolz-stubs==0.0.1',
 ]
 
 dev_requirements = [
