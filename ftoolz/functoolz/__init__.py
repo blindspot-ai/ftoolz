@@ -1,5 +1,7 @@
 from typing import Any, Callable, Tuple, Type, TypeVar, Union
 
+from cytoolz import compose
+
 # Invariant
 A = TypeVar('A')
 B = TypeVar('B')
@@ -17,6 +19,35 @@ A_out = TypeVar('A_out', covariant=True)
 B_out = TypeVar('B_out', covariant=True)
 C_out = TypeVar('C_out', covariant=True)
 D_out = TypeVar('D_out', covariant=True)
+
+
+def chain(*fs: Callable) -> Callable:
+    """
+    Compose given functions in reversed order.
+
+    Given functions f, g, the result of chain is chain(f, g) = g o f.
+
+    >>> def f(x: int) -> int:
+    ...     return x + 1
+
+    >>> def g(x: int) -> str:
+    ...     return str(x)
+
+    >>> chain(f, g)(41)
+    '42'
+
+    Chaining single function is the function itself.
+
+    >>> chain(f) is f
+    True
+
+    Empty function chain is identity.
+
+    >>> chain()(42)
+    42
+    """
+    g: Callable = compose(*reversed(fs))
+    return g
 
 
 def try_except(

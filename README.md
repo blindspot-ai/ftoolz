@@ -15,6 +15,7 @@ Moreover, there are general package-level functions implemented in `__init__.py`
  
 | Function | Description |
 |----------|-------------|
+| `chain(*fs)` | reversed function composition `chain(f, g) = g o f` |
 | `try_except(ex, f, g, args, kwargs)` | `f(args, kwargs)` and on exception(s) `ex` fallback to `g(args, kwargs)` |
 
 The package content is organized into modules by individual type class:
