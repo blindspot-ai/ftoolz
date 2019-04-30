@@ -36,6 +36,7 @@ The package content is organized into modules by individual type class:
 |`fmap3`| - | x | - |
 |`fmapN`| - | + | - |
 |`fproduct`| x | x | x |
+|`generate`| x | - | x |
 |`lift`| x | x | x |
 |`product`| x | x | x |
 |`unit`| x | * | x |
