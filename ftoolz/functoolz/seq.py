@@ -4,7 +4,7 @@ from typing import Any, Callable, Tuple
 from cytoolz.itertoolz import identity, mapcat
 
 from ftoolz.functoolz import A, A_in, A_out, B, B_in, B_out, C_out
-from ftoolz.typing import Seq
+from ftoolz.typing import Seq, seq
 
 
 def apply(ff: Seq[Callable[[A_in], B_out]], fa: Seq[A_in]) -> Seq[B_out]:
@@ -49,7 +49,7 @@ def flatmap(f: Callable[[A_in], Seq[B_out]], fa: Seq[A_in]) -> Seq[B_out]:
     >>> flatmap(f, (1, 2, 3))
     ('1', '1', '2', '2', '3', '3')
     """
-    return tuple(mapcat(f, fa))
+    return seq(mapcat(f, fa))
 
 
 def flatten(ffa: Seq[Seq[A]]) -> Seq[A]:
@@ -109,7 +109,7 @@ def fmap2(
     def ff(a: A_in) -> Seq[C_out]:
         return fmap(lambda b: f(a, b), fb)
 
-    return tuple() if not fb else flatmap(ff, fa)
+    return seq() if not fb else flatmap(ff, fa)
 
 
 def fproduct(f: Callable[[A], B_out], fa: Seq[A]) -> Seq[Tuple[A, B_out]]:
@@ -168,7 +168,7 @@ def generate(
         step = args[2] if len(args) > 2 else kwargs.get('step', 1)
         series = range(start, stop, step)
 
-    return tuple(f(i) for i in series)
+    return seq(f(i) for i in series)
 
 
 def lift(f: Callable[[A_in], B_out]) -> Callable[[Seq[A_in]], Seq[B_out]]:
@@ -244,4 +244,4 @@ def zip_map(f: Callable[..., A_out], *fx: Seq[Any]) -> Seq[A_out]:
     >>> zip_map(f, (1, 2, 3, 4), ('a', 'b', 'c'))
     ('a', 'bb', 'ccc')
     """
-    return tuple(starmap(f, zip(*fx)))
+    return seq(starmap(f, zip(*fx)))

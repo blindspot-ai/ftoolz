@@ -5,7 +5,7 @@ from cytoolz.itertoolz import cons, identity
 from ftoolz.functoolz import A, A_in, B
 from ftoolz.functoolz.opt import fmap, fmap2
 from ftoolz.itertoolz import fold_right
-from ftoolz.typing import Seq
+from ftoolz.typing import Seq, seq
 
 
 def sequence_iter(gfa: Iterable[Optional[A]]) -> Optional[Iterable[A]]:
@@ -54,12 +54,12 @@ def sequence_seq(gfa: Seq[Optional[A]]) -> Optional[Seq[A]]:
     >>> sequence_seq(tuple())
     ()
     """
-    return fmap(tuple, traverse_iter(identity, gfa))
+    return fmap(seq, traverse_iter(identity, gfa))
 
 
 def traverse_iter(
         f: Callable[[A_in], Optional[B]],
-        seq: Iterable[A_in]
+        fa: Iterable[A_in]
 ) -> Optional[Iterable[B]]:
     """
     Given a function which returns a `Optional` effect, thread this effect
@@ -71,12 +71,10 @@ def traverse_iter(
     """
 
     def op(a: A_in, acc: Optional[Iterable[B]]) -> Optional[Iterable[B]]:
-        # FIXME: mypy cannot resolve correct type event though it's fine
-        op_res: Optional[Iterable[B]] = fmap2(cons, f(a), acc)
-        return op_res
+        return fmap2(cons, f(a), acc)  # type: ignore
 
     empty: Optional[Iterable[B]] = iter([])
-    return fold_right(op, seq, empty)
+    return fold_right(op, fa, empty)
 
 
 def traverse_seq(
@@ -99,4 +97,4 @@ def traverse_seq(
     >>> traverse_seq(f, tuple())
     ()
     """
-    return fmap(tuple, traverse_iter(f, fa))
+    return fmap(seq, traverse_iter(f, fa))  # type: ignore

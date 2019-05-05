@@ -25,16 +25,11 @@ dev_requirements = [
 ]
 
 test_requirements = [
-    # 'astroid==2.2.5',
-    'astroid==2.1.0',
     'coverage==4.5.1',
     'flake8==3.7.7',
-    # 'mypy==0.700',
-    'mypy==0.630',
+    'mypy==0.701',
     'nose==1.3.7',
-    # 'pylint==2.3.0',
-    'pylint==2.2.0',
-    'typed-ast==1.1.1',
+    'pylint==2.3.1',
 ]
 
 setup(
