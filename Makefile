@@ -1,73 +1,72 @@
-.PHONY: help build clean clean-build setup setup-dev install release-check type-check flake8-check lint tests twine-release-test
+.PHONY: help build clean setup setup-system install install-system release-check type-check flake8-check lint tests twine-release-test
 
 .DEFAULT: help
 help:
-	@echo "make build"
+	@echo "make [py=/path/to/python] build"
 	@echo "       build distribution directories"
 	@echo "make clean"
-	@echo "       clean virtual environment and distribution"
-	@echo "make clean-build"
 	@echo "       clean distribution directories"
-	@echo "make setup"
-	@echo "       setup development environment"
-	@echo "make setup-dev"
-	@echo "       setup virtualenv and development environment"
-	@echo "make install"
-	@echo "       install dependencies"
-	@echo "make type-check"
+	@echo "make [py=/path/to/python] setup"
+	@echo "       setup development environment, optionally using provided python"
+	@echo "make setup-system"
+	@echo "       setup development environment using system python"
+	@echo "make [py=/path/to/python] install"
+	@echo "       install dependencies, optionally using provided python"
+	@echo "make install-system"
+	@echo "       install dependencies using system python"
+	@echo "make [py=/path/to/python] type-check"
 	@echo "       run mypy type checking"
-	@echo "make flake8-check"
+	@echo "make [py=/path/to/python] flake8-check"
 	@echo "       run flake8 code style check"
-	@echo "make lint"
+	@echo "make [py=/path/to/python] lint"
 	@echo "       run pylint"
-	@echo "make tests"
+	@echo "make [py=/path/to/python] tests"
 	@echo "       run unit and doc tests"
-	@echo "make release-check"
-	@echo "       run type-check, flake8 check, linting and tests"
-	@echo "make twine-release-test"
+	@echo "make [py=/path/to/python] coverage-check"
+	@echo "       run test coverage check"
+	@echo "make [py=/path/to/python] release-check"
+	@echo "       run type-check, flake8 check, linting, tests and coverage check"
+	@echo "make [py=/path/to/python] twine-release-test"
 	@echo "       release ftoolz to test pypi using twine"
 
-build: clean-build
+build: clean
 	@echo ">>> building ftoolz distribution"
-	python setup.py sdist
+	pipenv $(if $(py),--python $(py) --site-packages ,)run build
 
-clean: clean-build
-	rm -rf venv
-
-clean-build:
+clean:
 	rm -rf dist
 	rm -rf build
 	rm -rf *.egg-info
 
-setup: clean
-	pip install -U -e .[dev,test]
+setup:
+	pipenv install --dev $(if $(py),--python $(py),)
 
-setup-dev: clean
-	virtualenv -p python3 venv
-	./venv/bin/pip install -U pip
-	./venv/bin/pip install -U setuptools
-	./venv/bin/pip install -U -e .[dev,test]
+setup-system:
+	pipenv install --dev --system --deploy
 
-install: clean
-	python setup.py install
+install:
+	pipenv install $(if $(py),--python $(py),)
+
+install-system:
+	pipenv install --system --deploy
 
 type-check:
 	@echo ">>> checking types in ftoolz and tests"
-	mypy ftoolz tests || ( echo ">>> type check failed"; exit 1; )
+	pipenv $(if $(py),--python $(py) --site-packages ,)run type-check || ( echo ">>> type check failed"; exit 1; )
 
 flake8-check:
 	@echo ">>> enforcing PEP 8 style with flake8 in ftoolz and tests"
-	flake8 --config=.flake8 ftoolz/ tests/ || ( echo ">>> flake8 check failed"; exit 1; )
+	pipenv $(if $(py),--python $(py) --site-packages ,)run flake8-check || ( echo ">>> flake8 check failed"; exit 1; )
 
 lint:
 	@echo ">>> linting code"
-	pylint -j 0 --rcfile .pylintrc ftoolz tests || ( echo ">>> linting failed"; exit 1; )
+	pipenv $(if $(py),--python $(py) --site-packages ,)run lint || ( echo ">>> linting failed"; exit 1; )
 
 tests:
 	@echo ">>> running tests"
-	python tests/run.py || ( echo ">>> tests failed"; exit 1; )
+	pipenv $(if $(py),--python $(py) --site-packages ,)run tests || ( echo ">>> tests failed"; exit 1; )
 
 release-check: type-check flake8-check lint tests
 
 twine-release-test: build
-	python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+	pipenv $(if $(py),--python $(py) --site-packages ,)run release-test

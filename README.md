@@ -1,7 +1,5 @@
 # ftoolz
-[![Build Status](https://travis-ci.com/blindspot-ai/ftoolz.svg?branch=master)](https://travis-ci.com/blindspot-ai/ftoolz) [![Coverage Status](https://coveralls.io/repos/github/blindspot-ai/ftoolz/badge.svg?branch=master)](https://coveralls.io/github/blindspot-ai/ftoolz?branch=master) [![PyPI version](https://badge.fury.io/py/ftoolz.svg)](https://badge.fury.io/py/ftoolz) [![PyPI status](https://img.shields.io/pypi/status/ftoolz.svg)](https://pypi.python.org/pypi/ftoolz/)
-
-[![PyPI pyversions](https://img.shields.io/pypi/pyversions/ftoolz.svg)](https://pypi.python.org/pypi/ftoolz/)
+[![Build Status](https://travis-ci.com/blindspot-ai/ftoolz.svg?branch=master)](https://travis-ci.com/blindspot-ai/ftoolz) [![Coverage Status](https://coveralls.io/repos/github/blindspot-ai/ftoolz/badge.svg?branch=master)](https://coveralls.io/github/blindspot-ai/ftoolz?branch=master) [![PyPI version](https://badge.fury.io/py/ftoolz.svg)](https://badge.fury.io/py/ftoolz) [![PyPI status](https://img.shields.io/pypi/status/ftoolz.svg)](https://pypi.python.org/pypi/ftoolz/) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/ftoolz.svg)](https://pypi.python.org/pypi/ftoolz/)
 
 Collection of higher-order and utility functions built on top of `cytoolz`.
 
@@ -130,16 +128,17 @@ Also some valid cases might not be covered due to Python's restricted typing cap
 ## Setup development environment
 It is highly recommended to use virtual environment to develop and test `ftoolz`. For making things easy there are 
 two make targets to setup `ftoolz`:
-* `make setup-dev` which creates new virtual environment in `./venv`
-* `make setup` that just installs dependencies for development
+* `make setup` which creates new virtual environment managed by `pipenv` with both dev and `ftoolz` dependencies.
+* `make install` same as `make setup` but installs `ftoolz` dependencies only.
 
-Of course one can use his/her own favourite tool to create and manage python venv.
-
-To activate the prepared venv run:
+To python console in [pipenv](https://pipenv.readthedocs.io/en/latest/) environment, run:
 ```bash
-source venv/bin/activate
+pipenv shell
 ```
-and for deactivation simply `deactivate`.
+and for running specific command:
+```bash
+pipenv run <command>
+```
 
 ## Running checks and tests
 
@@ -172,7 +171,7 @@ One can also run all checks and tests at once via
 make release-check
 ```
 
-*Note*: Make sure you run these commands in an activate venv or a container.
+*Note*: All these commands run on python managed by `pipenv`.
 
 ## Distribution
 Project uses `setuptools` for distribution. Check settings in `setup.py`.

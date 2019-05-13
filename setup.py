@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 
+import json
 from os.path import exists
+from typing import Sequence
+
 from setuptools import find_packages, setup
 from setuptools.dist import Distribution
 
@@ -14,23 +17,17 @@ class BinaryDistribution(Distribution):
         return True
 
 
-ftoolz_requirements = [
-    'cytoolz==0.9.0.1',
-    'cytoolz-stubs==0.0.1',
-]
+with open('Pipfile.lock') as pipfile_lock:
+    lock_data = json.load(pipfile_lock)
 
-dev_requirements = [
-    'bumpversion==0.5.3',
-    'twine==1.13.0',
-]
 
-test_requirements = [
-    'coverage==4.5.1',
-    'flake8==3.7.7',
-    'mypy==0.701',
-    'nose==1.3.7',
-    'pylint==2.3.1',
-]
+def requirements(section: str) -> Sequence[str]:
+    """List versioned requirements from given section of Pipfile.lock"""
+    return [
+        f"{package_name}{package_data['version']}"
+        for package_name, package_data in lock_data[section].items()
+    ]
+
 
 setup(
     name='ftoolz',
@@ -59,8 +56,7 @@ setup(
     distclass=BinaryDistribution,
     zip_safe=False,
     python_requires='>=3.6',
-    install_requires=ftoolz_requirements,
-    extras_require={'dev': dev_requirements, 'test': test_requirements},
+    install_requires=requirements('default'),
     test_suite='tests',
-    tests_require=ftoolz_requirements + test_requirements,
+    tests_require=requirements('develop'),
 )
