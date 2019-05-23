@@ -58,6 +58,24 @@ List of currently implemented functions in modules (functors):
 |`traverse_iter`| x |
 |`traverse_iter`| x |
 
+### unsafe package
+Package `unsafe` is dedicated to all *impure* functions that are prone to or 
+will directly use side-effects.
+
+#### reflection
+This module contains functions for class discovery, inspection and 
+modifications.
+
+Table of contents
+
+| Function | Description |
+|----------|-------------|
+| `abstract(type)` | `True` iff `type` has abstract methods |
+| `implementations(type, package)` | discover all non-protected implementations of `type` under `package` |
+| `import_all(package)` | recursively import everything under `package` |
+| `protected(type)` | `True` iff `type` defines attribute `__protected__ = True` |
+| `subclasses(type, package)` | discover all subclasses of `type` under `package` |
+
 ### dicttoolz
 This module contains functions that work with `Map` (`Mapping`) instances.
 
