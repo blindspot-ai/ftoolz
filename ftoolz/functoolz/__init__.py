@@ -1,6 +1,9 @@
-from typing import Any, Callable, Tuple, Type, TypeVar, Union
+import functools
+from typing import Any, Callable, Optional, Tuple, Type, TypeVar, Union
 
 from cytoolz import compose
+
+from ftoolz.typing import Map
 
 # Invariant
 A = TypeVar('A')
@@ -19,6 +22,42 @@ A_out = TypeVar('A_out', covariant=True)
 B_out = TypeVar('B_out', covariant=True)
 C_out = TypeVar('C_out', covariant=True)
 D_out = TypeVar('D_out', covariant=True)
+
+
+def attempt(
+        e: Union[Type[Exception], Tuple[Type[Exception], ...]],
+        f: Callable[..., A],
+        *args: Any,
+        **kwargs: Any
+) -> Optional[A]:
+    """
+    Attempt to return `f(args, kwargs)` and on errors `e` fallback to `None`.
+
+    >>> attempt(ValueError, int, '1')
+    1
+    >>> attempt(ValueError, int, 'a')
+
+    One can pass both args and kwargs to `f` via `attempt`.
+
+    >>> def f(x: int, y: str) -> int:
+    ...     return x + int(y)
+
+    >>> attempt(ValueError, f, 1, y='2')
+    3
+    >>> attempt(ValueError, f, 1, y='x')
+
+    Errors that are not mentioned in `e` are propagated to outer scope.
+
+    >>> attempt(ValueError, lambda d: d['k'], {'a': 1})
+    Traceback (most recent call last):
+    ...
+    KeyError: 'k'
+    """
+
+    def none(*_args: Any, **_kwargs: Any) -> Optional[A]:
+        return None
+
+    return try_except(e, f, none, *args, **kwargs)
 
 
 def chain(*fs: Callable) -> Callable:
@@ -48,6 +87,68 @@ def chain(*fs: Callable) -> Callable:
     """
     g: Callable = compose(*reversed(fs))
     return g
+
+
+def silenced(
+        _f: Optional[Callable[..., A]] = None,
+        *,
+        error: Union[Type[Exception], Tuple[Type[Exception], ...]] = Exception
+) -> Callable[[Callable[..., A]], Callable[..., Optional[A]]]:
+    """
+    Decorator that turns `errors` raised by decorated function into `None`.
+
+    >>> @silenced(error=ValueError)
+    ... def f(x: int, y: str) -> int:
+    ...     return x + int(y)
+
+    >>> f(1, y='2')
+    3
+
+    >>> f(1, y='x')
+
+    Errors that are not mentioned in `error` are propagated to outer scope.
+
+    >>> @silenced(error=ValueError)
+    ... def g(d: Map[str, Any]) -> Any:
+    ...     return d['k']
+
+    >>> g({'a': 1})
+    Traceback (most recent call last):
+    ...
+    KeyError: 'k'
+
+    By default any `Exception` is silenced.
+
+    >>> @silenced
+    ... def h(d: Map[str, Any]) -> Any:
+    ...     return d['k']
+
+    >>> h({'a': 42})
+    """
+
+    def decorator(f: Callable[..., A]) -> Callable[..., Optional[A]]:
+        @functools.wraps(f)
+        def wrapper(*args: Any, **kwargs: Any) -> Optional[A]:
+            return attempt(error, f, *args, **kwargs)
+
+        return wrapper
+
+    return decorator if _f is None else decorator(_f)  # type: ignore
+
+
+def try_apply(f: Callable[..., A], *args: Any, **kwargs: Any) -> Optional[A]:
+    """
+    Run `f(args, kwargs)` and on **any** error fallback to `None`.
+
+    >>> def f(x: int, y: str) -> int:
+    ...     return x + int(y)
+
+    >>> try_apply(f, 1, y='2')
+    3
+    >>> try_apply(f, 1, y='x')
+    >>> try_apply(lambda d: d['k'], {'a': 1})
+    """
+    return attempt(Exception, f, *args, **kwargs)
 
 
 def try_except(

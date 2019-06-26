@@ -13,7 +13,10 @@ Moreover, there are general package-level functions implemented in `__init__.py`
  
 | Function | Description |
 |----------|-------------|
+| `attempt(ex, f, args, kwargs)` | equivalent to `try_except` with `g = lambda _: None` |
 | `chain(*fs)` | reversed function composition `chain(f, g) = g o f` |
+| `silence(errors)` | decorator that silences (selected/all) errors raised by decorated function |
+| `try_apply(f, args, kwargs)` | equivalent to `attempt` with `ex = Exception` |
 | `try_except(ex, f, g, args, kwargs)` | `f(args, kwargs)` and on exception(s) `ex` fallback to `g(args, kwargs)` |
 
 The package content is organized into modules by individual type class:
