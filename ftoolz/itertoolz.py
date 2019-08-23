@@ -1,17 +1,22 @@
 from functools import reduce
 from itertools import islice
-from typing import Callable, Iterable, List, Optional, Reversible, Tuple, \
-    TypeVar
+from typing import Callable, Hashable, Iterable, List, Optional, Reversible, \
+    Tuple, TypeVar
 
 from cytoolz.functoolz import complement, compose
-from cytoolz.itertoolz import drop, identity, last as clast, peek, unique
+from cytoolz.itertoolz import drop, identity, last as clast, peek, reduceby, \
+    unique
 
+from ftoolz.adt.mutiter import MutIter
 from ftoolz.typing import Map, Seq
 
 A = TypeVar('A')
 B = TypeVar('B')
 C = TypeVar('C')
 E = TypeVar('E')
+K = TypeVar('K')
+
+_H = TypeVar('_H', bound=Hashable)
 
 
 def associate(key: Callable[[B], A], values: Iterable[B]) -> Map[A, B]:
@@ -335,6 +340,84 @@ def make_str(
     """
     tokens = map(key, it)
     return sep.join(tokens)
+
+
+def order_by(  # type: ignore
+        it: Iterable[E],
+        by: Seq[K],
+        key: Callable[[E], Optional[K]] = identity
+) -> Iterable[Optional[E]]:
+    """
+    Collect given elements `it` and order them in order given by keys `by`.
+    A key can be obtained from an entity using function `key`.
+
+    Key sequence `by` is assumed to be a super-set of keys from `it`,
+    missing entries will be indicated by `None`s in the output.
+
+    >>> list(order_by(['a', 'c'], by=['c', 'b', 'a']))
+    ['c', None, 'a']
+    >>> list(order_by([], by=['a', 'b']))
+    [None, None]
+
+    >>> list(order_by([{'id': 'a'}, {'id_x': 'c'}],
+    ...     by=['c', 'b', 'a'], key=lambda e: e.get('id')))
+    [None, None, {'id': 'a'}]
+
+    Duplicate item occurrences will preserve order of entities with
+    corresponding key.
+
+    >>> list(order_by([{'id': 'a', 'data': 1}, {'id': 'a', 'data': 2}],
+    ...     by=['a', 'b', 'a'], key=lambda e: e.get('id')))
+    [{'id': 'a', 'data': 1}, None, {'id': 'a', 'data': 2}]
+
+    As a side-effect, original iterable is consumed by this operation.
+
+    >>> it = iter(['a', 'c'])
+    >>> _ = list(order_by(it, by=['c', 'b', 'a']))
+    >>> next(it)
+    Traceback (most recent call last):
+    ...
+    StopIteration
+    """
+    groups = reduceby(key, MutIter.add, it, init=MutIter)
+
+    for item in by:
+        yield next(groups.get(item, MutIter()), None)
+
+
+def positions(it: Seq[_H]) -> Map[_H, Tuple[int, ...]]:
+    """
+    Collect positions of (non-unique) tuple of items in original sequence.
+
+    >>> positions(['a', 'b', 'c'])
+    {'a': (0,), 'b': (1,), 'c': (2,)}
+    >>> positions(['a', 'b', 'a'])
+    {'a': (0, 2), 'b': (1,)}
+    >>> positions([])
+    {}
+
+    Function can operate on sequences of arbitrary :class:`Hashable` items.
+
+    >>> positions([('a', True), ('b', False), ('c', True)])
+    {('a', True): (0,), ('b', False): (1,), ('c', True): (2,)}
+    >>> positions([('a', True), ('b', False), ('a', True)])
+    {('a', True): (0, 2), ('b', False): (1,)}
+    """
+
+    def item(idx_item: Tuple[int, _H]) -> _H:
+        _, item_ = idx_item
+        return item_
+
+    def collect_idx(
+            acc: Tuple[int, ...], idx_item: Tuple[int, _H]
+    ) -> Tuple[int, ...]:
+        idx, _ = idx_item
+        return (*acc, idx)
+
+    def _empty() -> Tuple[int, ...]:
+        return tuple()
+
+    return reduceby(item, collect_idx, enumerate(it), init=_empty)
 
 
 def split_by(

@@ -6,6 +6,13 @@ Collection of higher-order and utility functions built on top of `cytoolz`.
 ## Module overview
 Ftoolz are split into few generic modules.
 
+### adt package
+Package that provides implementation for various Abstract Data Types (ADTs).
+
+| ADT | Description |
+|----------|-------------|
+| `MutIter(s0)` | mutable iterator that can be both consumed and appended to, optionally initialized with init state `s0` |
+
 ### functoolz package
 Package that provides higher-order functions commonly associated with Functor, Applicative and Monad. 
 
@@ -112,6 +119,8 @@ selected by `key_fn` |
 | `iter_with_final(iterable)` | creates iterable of tuples of original element and final flag |
 | `last(sequence)` | return last element of a sequence or `None` |
 | `make_str(iterable, key_fn, separator)` | create string of tokens from iterable selected by `key_fn` with separator |
+| `order_by(iterable, by, key_fn)` | order `iterable` w.r.t. order given by keys sequence `by` (given key-getter `key_fn`) and fill in missing values as `None` |
+| `positions(sequence)` | collect positions of non-unique items in original sequence |
 | `split_by(predicate, iterable)` | split elements of iterable by predicate to positives and negatives |
 | `take(n, iterable)` | take first n elements of an iterable |
 | `take_first(iterable)` | take first element of an iterable or fail |
