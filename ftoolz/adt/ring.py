@@ -6,12 +6,12 @@ from cytoolz.functoolz import do
 from ftoolz.typing import Seq
 
 _E = TypeVar('_E')
-_T = TypeVar('_T')
 
 
-class Ring(Iterator[_E], Sized):
+class Ring(Iterator[_E], Sized):  # pylint: disable=E0239
     """Fixed-size in-memory rotating list of elements"""
 
+    # pylint: disable=W0231
     def __init__(self, elements: Iterable[_E] = tuple()) -> None:
         self._ring = deque(elements)
 
