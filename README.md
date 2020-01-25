@@ -140,6 +140,8 @@ Table of contents
 | `none(optional)` | `True` iff optional *is* `None` |
 | `even(integer)` | `True` iff integer is even |
 | `odd(integer)` | `True` iff integer is odd |
+| `vall(*args)` | `True` iff no argument has boolean value `False` |
+| `vany(*args)` | `True` iff boolean value of at least one argument is `True` |
 
 ### typing
 Typing contains helpful type aliases and other type-related definitions.
