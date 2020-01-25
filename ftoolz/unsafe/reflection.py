@@ -47,7 +47,7 @@ def implementations(clz: Type[T], package: str) -> List[Type[T]]:
     **Warning**: Class discovery uses `import_all` so any side-effect of any
     import under the package will be executed as a side-effect of this function
     """
-    import importlib
+    import importlib  # pylint: disable=import-outside-toplevel
 
     def load(c: Type[T]) -> Type[T]:
         module_name = f'{package}.{c.__module__}' \
@@ -72,6 +72,7 @@ def import_all(package: str) -> None:
     **Warning**: Any side-effect of any import under the package will be
     executed as a side-effect of this function.
     """
+    # pylint: disable=import-outside-toplevel
     import pkgutil
     import sys
     pkg = sys.modules[package]

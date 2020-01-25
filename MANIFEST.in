@@ -1,3 +1,2 @@
-include Pipfile.lock
 recursive-include cytoolz-stubs *.pyi
 recursive-include ftoolz *.py py.typed
