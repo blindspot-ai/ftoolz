@@ -34,7 +34,7 @@ test_requirements = [
 
 setup(
     name='ftoolz',
-    version='0.3.3',
+    version='0.4.0',
     license='MIT',
     description='Collection of higher-order and utility functions',
     long_description=(open('README.md').read() if exists('README.md') else ''),
