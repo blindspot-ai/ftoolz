@@ -45,3 +45,39 @@ def odd(n: int) -> bool:
     [(0, False), (1, True), (2, False), (3, True), (4, False)]
     """
     return n % 2 != 0
+
+
+def vall(*args: A) -> bool:
+    """
+    Variadic `and` over given set of arguments.
+
+    >>> vall()
+    True
+    >>> vall(True, True, True)
+    True
+    >>> vall(1, 1, 1)
+    True
+    >>> vall(True, False, True)
+    False
+    >>> vall(1, 0, 1)
+    False
+    """
+    return all(bool(a) for a in args) if args else True
+
+
+def vany(*args: A) -> bool:
+    """
+    Variadic `or` over given set of arguments.
+
+    >>> vany()
+    False
+    >>> vany(False, False, False)
+    False
+    >>> vany(0, 0, 0)
+    False
+    >>> vany(False, False, True)
+    True
+    >>> vany(0, 0, 1)
+    True
+    """
+    return any(bool(a) for a in args) if args else False
