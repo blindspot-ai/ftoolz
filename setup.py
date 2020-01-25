@@ -1,13 +1,9 @@
 #!/usr/bin/env python
 
-import json
 from os.path import exists
-from typing import Sequence
 
 from setuptools import find_packages, setup
 from setuptools.dist import Distribution
-
-from ftoolz import __version__ as ftoolz_version
 
 
 class BinaryDistribution(Distribution):
@@ -17,21 +13,28 @@ class BinaryDistribution(Distribution):
         return True
 
 
-with open('Pipfile.lock') as pipfile_lock:
-    lock_data = json.load(pipfile_lock)
+requirements = [
+    'cytoolz==0.9.0.1',
+    'cytoolz-stubs==0.0.1',
+]
 
+dev_requirements = [
+    'bumpversion==0.5.3',
+    'twine==3.1.0',
+]
 
-def requirements(section: str) -> Sequence[str]:
-    """List versioned requirements from given section of Pipfile.lock"""
-    return [
-        f"{package_name}{package_data['version']}"
-        for package_name, package_data in lock_data[section].items()
-    ]
+test_requirements = [
+    'coverage==4.5.4',
+    'flake8==3.7.9',
+    'mypy==0.740',
+    'nose==1.3.7',
+    'pylint==2.4.4',
+]
 
 
 setup(
     name='ftoolz',
-    version=ftoolz_version,
+    version='0.3.3',
     license='MIT',
     description='Collection of higher-order and utility functions',
     long_description=(open('README.md').read() if exists('README.md') else ''),
@@ -46,6 +49,7 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
     ],
     url='https://github.com/blindspot-ai/ftoolz',
     maintainer='Martin Matyasek',
@@ -56,7 +60,8 @@ setup(
     distclass=BinaryDistribution,
     zip_safe=False,
     python_requires='>=3.6',
-    install_requires=requirements('default'),
+    install_requires=requirements,
+    extras_require={'dev': dev_requirements, 'test': test_requirements},
     test_suite='tests',
-    tests_require=requirements('develop'),
+    tests_require=requirements + test_requirements,
 )

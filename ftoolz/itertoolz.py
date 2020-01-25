@@ -342,10 +342,10 @@ def make_str(
     return sep.join(tokens)
 
 
-def order_by(  # type: ignore
+def order_by(
         it: Iterable[E],
         by: Seq[K],
-        key: Callable[[E], Optional[K]] = identity
+        key: Callable[[E], Optional[K]] = identity  # type: ignore
 ) -> Iterable[Optional[E]]:
     """
     Collect given elements `it` and order them in order given by keys `by`.

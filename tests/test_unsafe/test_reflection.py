@@ -7,6 +7,7 @@ from ftoolz.unsafe.reflection import implementations
 class ReflectionTest(TestCase):
 
     def test_implementations(self) -> None:
+        # pylint: disable=import-outside-toplevel
         from tests.test_unsafe.classes import A, B, E
 
         cases: List[Tuple[Type[A], List[str]]] = [

@@ -158,17 +158,16 @@ Also some valid cases might not be covered due to Python's restricted typing cap
 ## Setup development environment
 It is highly recommended to use virtual environment to develop and test `ftoolz`. For making things easy there are 
 two make targets to setup `ftoolz`:
-* `make setup` which creates new virtual environment managed by `pipenv` with both dev and `ftoolz` dependencies.
-* `make install` same as `make setup` but installs `ftoolz` dependencies only.
+* `make setup-dev` which creates new virtual environment in `./venv`
+* `make setup` that just installs dependencies for development
 
-To python console in [pipenv](https://pipenv.readthedocs.io/en/latest/) environment, run:
+Of course one can use his/her own favourite tool to create and manage python venv.
+
+To activate the prepared venv run:
 ```bash
-pipenv shell
+source venv/bin/activate
 ```
-and for running specific command:
-```bash
-pipenv run <command>
-```
+and for deactivation simply `deactivate`.
 
 ## Running checks and tests
 
@@ -201,7 +200,7 @@ One can also run all checks and tests at once via
 make release-check
 ```
 
-*Note*: All these commands run on python managed by `pipenv`.
+*Note*: Make sure you run these commands in an activate venv or a container.
 
 ## Distribution
 Project uses `setuptools` for distribution. Check settings in `setup.py`.
