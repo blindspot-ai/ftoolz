@@ -8,7 +8,7 @@ from ftoolz.typing import Seq, seq
 _E = TypeVar('_E')
 
 
-class Ring(Iterator[_E], Sized):  # pylint: disable=E0239
+class Ring(Iterator[_E], Sized):  # pylint: disable=inherit-non-class
     """Fixed-size in-memory rotating list of elements"""
 
     # pylint: disable=W0231

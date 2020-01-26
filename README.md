@@ -12,6 +12,7 @@ Package that provides implementation for various Abstract Data Types (ADTs).
 | ADT | Description |
 |----------|-------------|
 | `MutIter(s0)` | mutable iterator that can be both consumed and appended to, optionally initialized with init state `s0` |
+| `Ring(s0)` | immutable circular queue-based structure initialized with init state `s0` that implements `Sized` and infinite `Iterator` that loops state elements around |
 
 ### functoolz package
 Package that provides higher-order functions commonly associated with Functor, Applicative and Monad. 
