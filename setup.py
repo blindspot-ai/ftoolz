@@ -28,7 +28,7 @@ test_requirements = [
     'flake8==3.7.9',
     'mypy==0.740',
     'nose==1.3.7',
-    'pylint==2.4.4',
+    'pylint==4.0.9',
 ]
 
 
